@@ -12,18 +12,15 @@ if (isset($_POST['login'])) {
     if ($resultado->num_rows == 1) {
         $usuario = $resultado->fetch_assoc();
 
-        // COMPARACIÓN DIRECTA (por ahora)
-        if ($password == $usuario['contraseña']) {
-            $_SESSION['usuario'] = $usuario['nombre'];
-            $_SESSION['rol'] = $usuario['rol'];
-            header("Location: ../index.php");
-            exit();
-        } else {
-            $error = "Contraseña incorrecta";
-        }
-    } else {
-        $error = "Usuario no encontrado";
-    }
+        // Compara la clave ingresada con el hash guardado en la BD
+if (password_verify($password, $usuario['contraseña'])) { 
+    $_SESSION['usuario'] = $usuario['nombre'];
+    $_SESSION['rol'] = $usuario['rol'];
+    header("Location: ../index.php");
+    exit();
+} else {
+    $error = "Contraseña incorrecta";
+}
 }
 ?>
 
