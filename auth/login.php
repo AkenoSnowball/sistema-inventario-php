@@ -6,23 +6,34 @@ if (isset($_POST['login'])) {
     $correo = $_POST['correo'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM usuarios WHERE correo = '$correo'";
-    $resultado = $conn->query($sql);
+    // 1. Preparamos la consulta
+    $stmt = $conn->prepare("SELECT * FROM usuarios WHERE correo = ?");
+    $stmt->bind_param("s", $correo);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
 
+    // 2. Verificamos si el usuario existe
     if ($resultado->num_rows == 1) {
         $usuario = $resultado->fetch_assoc();
 
-        // Compara la clave ingresada con el hash guardado en la BD
-if (password_verify($password, $usuario['contraseña'])) { 
-    $_SESSION['usuario'] = $usuario['nombre'];
-    $_SESSION['rol'] = $usuario['rol'];
-    header("Location: ../index.php");
-    exit();
-} else {
-    $error = "Contraseña incorrecta";
-}
+        // 3. Verificamos la contraseña con el hash
+        if (password_verify($password, $usuario['contraseña'])) { 
+            $_SESSION['usuario'] = $usuario['nombre'];
+            $_SESSION['rol'] = $usuario['rol'];
+            header("Location: ../index.php");
+            exit();
+        } else {
+            // Error genérico por seguridad
+            $error = "Usuario o contraseña incorrectos.";
+        }
+    } else {
+        // Error genérico si el correo no existe
+        $error = "Usuario o contraseña incorrectos.";
+    }
+    $stmt->close();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
