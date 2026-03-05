@@ -1,24 +1,18 @@
 <?php
 session_start();
-
 if (!isset($_SESSION['usuario'])) {
     header("Location: auth/login.php");
     exit();
 }
+include 'includes/header.php'; // TRAE EL DISEÑO DE header
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Inventario</title>
-</head>
-<body>
+<div class="text-center py-5">
+    <h1>Bienvenido, <span class="text-primary"><?= $_SESSION['usuario'] ?></span></h1>
+    <p class="lead">Rol: <span class="badge bg-secondary"><?= $_SESSION['rol'] ?></span></p>
+    <hr>
+    <div class="row mt-4">
+        </div>
+</div>
 
-<h1>Bienvenido, <?php echo $_SESSION['usuario']; ?></h1>
-<p>Rol: <?php echo $_SESSION['rol']; ?></p>
-
-<a href="auth/logout.php">Cerrar sesión</a>
-
-</body>
-</html>
+<?php include 'includes/footer.php'; // TRAE EL DISEÑO DE ABAJO ?>

@@ -1,43 +1,72 @@
 <?php
 session_start();
+// 1. Verificación de sesión
+if (!isset($_SESSION['usuario'])) { 
+    header("Location: ../auth/login.php"); 
+    exit(); 
+}
+
 include("../config/conexion.php");
 
-$productos = $conn->query("SELECT * FROM productos");
-
+// 2. Lógica para registrar la entrada (Procesar el formulario)
 if (isset($_POST['registrar'])) {
     $producto_id = $_POST['producto_id'];
     $cantidad = $_POST['cantidad'];
 
+    // Usamos sentencias preparadas para seguridad
     // Registrar movimiento
-    $conn->query("INSERT INTO movimientos (producto_id, tipo, cantidad)
-                  VALUES ($producto_id, 'entrada', $cantidad)");
+    $stmt1 = $conn->prepare("INSERT INTO movimientos (producto_id, tipo, cantidad) VALUES (?, 'entrada', ?)");
+    $stmt1->bind_param("ii", $producto_id, $cantidad);
+    $stmt1->execute();
 
-    // Aumentar stock
-    $conn->query("UPDATE productos 
-                  SET stock = stock + $cantidad 
-                  WHERE id = $producto_id");
+    // Aumentar stock en la tabla productos
+    $stmt2 = $conn->prepare("UPDATE productos SET stock = stock + ? WHERE id = ?");
+    $stmt2->bind_param("ii", $cantidad, $producto_id);
+    $stmt2->execute();
 
     header("Location: ../productos/listar.php");
     exit();
 }
+
+// 3. Obtener productos para el menú desplegable
+$productos = $conn->query("SELECT * FROM productos");
+
+include("../includes/header.php");
 ?>
 
-<h2>Entrada de Inventario</h2>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="bi bi-arrow-down-circle"></i> Registrar Entrada</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Seleccionar Producto</label>
+                        <select name="producto_id" class="form-select" required>
+                            <option value="">Seleccione un producto...</option>
+                            <?php while ($p = $productos->fetch_assoc()) { ?>
+                                <option value="<?= $p['id'] ?>">
+                                    <?= htmlspecialchars($p['nombre']) ?> (Stock actual: <?= $p['stock'] ?>)
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Cantidad a ingresar</label>
+                        <input type="number" name="cantidad" class="form-control" min="1" placeholder="Ej: 10" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button name="registrar" class="btn btn-success">
+                            <i class="bi bi-check-circle"></i> Guardar Entrada
+                        </button>
+                        <a href="../productos/listar.php" class="btn btn-light border">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-<form method="POST">
-    Producto:<br>
-    <select name="producto_id" required>
-        <?php while ($p = $productos->fetch_assoc()) { ?>
-            <option value="<?= $p['id'] ?>">
-                <?= $p['nombre'] ?>
-            </option>
-        <?php } ?>
-    </select><br><br>
-
-    Cantidad:<br>
-    <input type="number" name="cantidad" min="1" required><br><br>
-
-    <button name="registrar">Registrar Entrada</button>
-</form>
-
-<a href="../productos/listar.php">Volver</a>
+<?php include("../includes/footer.php"); ?>
