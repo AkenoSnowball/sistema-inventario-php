@@ -1,5 +1,3 @@
-<?php include 'includes/footer.php'; ?>
-
 <?php
 session_start();
 if (!isset($_SESSION['usuario'])) {
@@ -81,7 +79,7 @@ $total_critico = $datos_critico['critico'] ?? 0;
     <div class="row g-4 text-center">
         <h3>Accesos Rápidos</h3>
         <div class="col-md-4">
-            <a href="productos/listar.php" class="btn btn-outline-dark w-100 py-3">
+                <a href="productos/listar.php" class="btn btn-outline-primary w-100 py-3">
                 <i class="bi bi-list-ul"></i> Gestionar Productos
             </a>
         </div>
@@ -98,4 +96,4 @@ $total_critico = $datos_critico['critico'] ?? 0;
     </div>
 </div>
 
-<?php include("includes/footer.php"); ?>  // TRAE EL DISEÑO DE ABAJO
+<?php include("includes/footer.php"); ?>  

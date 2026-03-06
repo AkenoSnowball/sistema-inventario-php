@@ -73,7 +73,7 @@ include("../includes/header.php");
 </div>
 
 <div class="mt-4">
-    <a href="../index.php" class="btn btn-secondary">Volver al Inicio</a>
+    <a href="../index.php" class="btn-outline-primary">Volver al Inicio</a>
 </div>
 
 <?php include("../includes/footer.php"); ?>
