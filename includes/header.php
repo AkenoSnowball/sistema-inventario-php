@@ -29,7 +29,14 @@
                 <li class="nav-item"><a class="nav-link" href="/inventario/productos/listar.php">Productos</a></li>
                 <li class="nav-item"><a class="nav-link" href="/inventario/movimientos/entrada.php">Entradas</a></li>
                 <li class="nav-item"><a class="nav-link" href="/inventario/movimientos/salida.php">Salidas</a></li>
-    
+                <!-- SOLO ADMIN VE ESTO -->
+                <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Admin'): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/inventario/usuarios/listar.php">
+                            <i class="bi bi-people-fill"></i> Usuarios
+                        </a>
+                    </li>
+                <?php endif; ?>
                 <!-- Interruptor de Tema -->
                 <li class="nav-item d-flex align-items-center me-3">
                     <div class="form-check form-switch">
@@ -40,11 +47,10 @@
                     </div>
                 </li>
 
-    <li class="nav-item">
-        <a class="nav-link text-danger" href="/inventario/auth/logout.php">Salir</a>
-    </li>
-</ul>
-
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="/inventario/auth/logout.php">Salir</a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
