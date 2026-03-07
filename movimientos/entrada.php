@@ -1,31 +1,33 @@
 <?php
 session_start();
+include("../config/conexion.php");
 // 1. Verificación de sesión
 if (!isset($_SESSION['usuario'])) { 
     header("Location: ../auth/login.php"); 
     exit(); 
 }
 
-include("../config/conexion.php");
-
 // 2. Lógica para registrar la entrada (Procesar el formulario)
 if (isset($_POST['registrar'])) {
     $producto_id = $_POST['producto_id'];
     $cantidad = $_POST['cantidad'];
-
+    $user_id = $_SESSION['user_id']; // Capturamos quién hace la entrada
+    $tipo = 'entrada';
     // Usamos sentencias preparadas para seguridad
     // Registrar movimiento
-    $stmt1 = $conn->prepare("INSERT INTO movimientos (producto_id, tipo, cantidad) VALUES (?, 'entrada', ?)");
-    $stmt1->bind_param("ii", $producto_id, $cantidad);
-    $stmt1->execute();
+    $stmt1 = $conn->prepare("INSERT INTO movimientos (producto_id, usuario_id, tipo, cantidad) VALUES (?, ?, ?, ?)");
+    $stmt1->bind_param("iisi", $producto_id, $user_id, $tipo, $cantidad);
+        
+if ($stmt1->execute()) {
 
     // Aumentar stock en la tabla productos
     $stmt2 = $conn->prepare("UPDATE productos SET stock = stock + ? WHERE id = ?");
     $stmt2->bind_param("ii", $cantidad, $producto_id);
     $stmt2->execute();
 
-    header("Location: ../productos/listar.php");
+    header("Location: ../productos/listar.php?msg=entrada_ok");
     exit();
+    }
 }
 
 // 3. Obtener productos para el menú desplegable

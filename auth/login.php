@@ -18,6 +18,7 @@ if (isset($_POST['login'])) {
 
         // 3. Verificamos la contraseña con el hash
         if (password_verify($password, $usuario['contraseña'])) { 
+            $_SESSION['user_id'] = $usuario['id']; // Guardamos el ID para los Logs
             $_SESSION['usuario'] = $usuario['nombre'];
             $_SESSION['rol'] = $usuario['rol'];
             header("Location: ../index.php");

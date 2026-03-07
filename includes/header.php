@@ -29,6 +29,12 @@
                 <li class="nav-item"><a class="nav-link" href="/inventario/productos/listar.php">Productos</a></li>
                 <li class="nav-item"><a class="nav-link" href="/inventario/movimientos/entrada.php">Entradas</a></li>
                 <li class="nav-item"><a class="nav-link" href="/inventario/movimientos/salida.php">Salidas</a></li>
+            <!-- INSERCCION DEL HISTORIAL -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/inventario/movimientos/historial.php">
+                        <i class="bi bi-journal-text"></i> Historial
+                    </a>
+                </li>
                 <!-- SOLO ADMIN VE ESTO -->
                 <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Admin'): ?>
                     <li class="nav-item">
