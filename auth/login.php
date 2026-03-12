@@ -60,6 +60,11 @@ if (isset($_POST['login'])) {
         border: 1px solid rgba(255,255,255,0.1);
         backdrop-filter: blur(10px);
     }
+    .logo-login {
+        height: 120px; 
+        width: auto;
+        object-fit: contain;
+    }
 </style>
 
 </head>
@@ -71,10 +76,12 @@ if (isset($_POST['login'])) {
         <div class="card-body p-5">
             <div class="text-center mb-4">
                 <!-- Un icono más llamativo -->
-                <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
-                    <i class="bi bi-shield-lock text-primary" style="font-size: 2.5rem;"></i>
+                <div class="text-center mb-4">
+                <!-- REEMPLAZO DEL ICONO -->
+                <div class="mb-3">
+                    <img src="/inventario/assets/img/logo_invento.png" alt="Logo INVENTO" class="logo-login">
                 </div>
-                <h3 class="fw-bold">Bienvenido</h3>
+                    <h3 class="fw-bold">Bienvenido</h3>
                 <p class="text-muted">Ingresa al Sistema de Inventario</p>
             </div>
 

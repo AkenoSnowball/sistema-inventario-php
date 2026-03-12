@@ -15,17 +15,40 @@
     <title>Sistema de Inventario</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <style>
+        /* Estilos específicos para el nuevo logo */
+        .logo-image {
+            height: 32px; 
+            width: auto;
+            object-fit: contain;
+        }
+        .navbar-brand span {
+            font-weight: 600;
+            font-size: 1.15rem;
+        }
+        /* Efecto para que el logo resalte en modo oscuro */
+        .navbar-dark .logo-image {
+            filter: drop-shadow(0px 0px 1px white);
+        }
+    </style>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="/inventario/index.php">📦 Gestión PYME</a>
+        <!-- SECCIÓN MODIFICADA: Reemplazo del texto plano por el Logo + Texto -->
+        <a class="navbar-brand d-flex align-items-center" href="/inventario/index.php">📦 Gestión PYME</a>
+            <img src="/inventario/assets/img/logo_invento.png" alt="Logo" class="logo-image me-2">
+            <span>INVENTO</span>
+        </a>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto align-items-center"> <!-- Añadido align-items-center -->
                 <li class="nav-item"><a class="nav-link" href="/inventario/productos/listar.php">Productos</a></li>
                 <li class="nav-item"><a class="nav-link" href="/inventario/movimientos/entrada.php">Entradas</a></li>
                 <li class="nav-item"><a class="nav-link" href="/inventario/movimientos/salida.php">Salidas</a></li>
